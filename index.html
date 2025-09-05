@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Book Plus - Premium Contact Manager</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600&family=Open+Sans:wght@300;400;500;600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-address-book"></i> Contact Book Plus</h1>
+                <div class="header-controls">
+                    <div class="theme-selector">
+                        <select id="themeSelect" class="btn-icon" title="Select Theme">
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
+                            <option value="blue">Blue</option>
+                            <option value="purple">Purple</option>
+                            <option value="green">Green</option>
+                            <option value="orange">Orange</option>
+                        </select>
+                    </div>
+                    <div class="bg-selector">
+                        <input type="file" id="bgImageInput" accept="image/*" style="display: none;">
+                        <button class="btn-icon" onclick="document.getElementById('bgImageInput').click()" title="Change Background">
+                            <i class="fas fa-image"></i>
+                        </button>
+                    </div>
+                    <button id="exportBtn" class="btn-icon" title="Export Contacts">
+                        <i class="fas fa-download"></i>
+                    </button>
+                    <button id="importBtn" class="btn-icon" title="Import Contacts">
+                        <i class="fas fa-upload"></i>
+                    </button>
+                    <input type="file" id="importFile" accept=".json,.csv" style="display: none;">
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="search-section">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search contacts...">
+                    </div>
+                    <div class="filter-section">
+                        <select id="groupFilter">
+                            <option value="">All Groups</option>
+                            <option value="family">Family</option>
+                            <option value="friends">Friends</option>
+                            <option value="work">Work</option>
+                            <option value="business">Business</option>
+                        </select>
+                        <select id="sortBy">
+                            <option value="name">Sort by Name</option>
+                            <option value="date">Sort by Date Added</option>
+                            <option value="group">Sort by Group</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="stats-section">
+                    <h3>Statistics</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-number" id="totalContacts">0</span>
+                            <span class="stat-label">Total Contacts</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="favoriteContacts">0</span>
+                            <span class="stat-label">Favorites</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+                    <button id="addContactBtn" class="btn-primary">
+                        <i class="fas fa-plus"></i> Add Contact
+                    </button>
+                    <button id="bulkDeleteBtn" class="btn-secondary">
+                        <i class="fas fa-trash-alt"></i> Bulk Delete
+                    </button>
+                    <button id="backupBtn" class="btn-secondary">
+                        <i class="fas fa-cloud-upload-alt"></i> Backup
+                    </button>
+                    <button id="duplicateBtn" class="btn-secondary">
+                        <i class="fas fa-copy"></i> Find Duplicates
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Contact List -->
+            <section class="contact-list-section">
+                <div class="section-header">
+                    <h2>Contacts</h2>
+                    <div class="view-controls">
+                        <button id="gridView" class="view-btn active">
+                            <i class="fas fa-th"></i>
+                        </button>
+                        <button id="listView" class="view-btn">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="contactList" class="contact-grid"></div>
+            </section>
+        </main>
+
+        <!-- Contact Form Modal -->
+        <div id="contactModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modalTitle">Add New Contact</h3>
+                    <button class="close-btn" id="closeModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <form id="contactForm" class="contact-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="tel" id="phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="company">Company</label>
+                            <input type="text" id="company">
+                        </div>
+                        <div class="form-group">
+                            <label for="jobTitle">Job Title</label>
+                            <input type="text" id="jobTitle">
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="address">Address</label>
+                            <textarea id="address" rows="2"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="birthday">Birthday</label>
+                            <input type="date" id="birthday">
+                        </div>
+                        <div class="form-group">
+                            <label for="group">Group</label>
+                            <select id="group">
+                                <option value="">Select Group</option>
+                                <option value="family">Family</option>
+                                <option value="friends">Friends</option>
+                                <option value="work">Work</option>
+                                <option value="business">Business</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="notes">Notes</label>
+                            <textarea id="notes" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="website">Website</label>
+                            <input type="url" id="website">
+                        </div>
+                        <div class="form-group">
+                            <label for="socialMedia">Social Media</label>
+                            <input type="text" id="socialMedia" placeholder="@username">
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="tags">Tags</label>
+                            <input type="text" id="tags" placeholder="colleague, friend, client">
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" id="cancelBtn" class="btn-secondary">Cancel</button>
+                        <button type="submit" class="btn-primary">Save Contact</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Bulk Delete Modal -->
+        <div id="bulkDeleteModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Bulk Delete Contacts</h3>
+                    <button class="close-btn" id="closeBulkModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="bulk-delete-content">
+                    <p>Select contacts to delete:</p>
+                    <div id="bulkDeleteList" class="bulk-delete-list"></div>
+                    <div class="form-actions">
+                        <button type="button" id="cancelBulkBtn" class="btn-secondary">Cancel</button>
+                        <button type="button" id="confirmBulkDelete" class="btn-danger">Delete Selected</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notifications -->
+        <div id="toast" class="toast"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
